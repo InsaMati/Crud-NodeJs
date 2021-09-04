@@ -4,20 +4,13 @@ const morgan = require('morgan');
 const mysql = require('mysql');
 const myConnection = require('express-myconnection');
 const app = express();
-
-// imports
 const customerRoutes = require('./routers/customer');
 const { urlencoded } = require('express');
-
-// settings
 
 app.set('port', process.env.PORT || 3000);
 app.set('view engine','ejs');
 app.set('views', path.join(__dirname, 'views'))
-
-// PHP, FIREBASE, MYSQL, MONGODB, POSGRESQL 
-
-// middlewares
+app.use(express.static(__dirname + '/public'));
 
 app.use(morgan('dev'));
 app.use(myConnection(mysql, {
@@ -30,12 +23,7 @@ app.use(myConnection(mysql, {
 
 app.use(express.urlencoded({extended: false}));
 
-// routers
-
 app.use('/',customerRoutes);
-
-app.use(express.static(path.join(__dirname,'public')));
-
 
 // servers
 app.listen(app.get('port'),()=>{
